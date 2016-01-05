@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 上传文件大小 -->
+	<constant name="struts.multipart.maxSize" value="20971520" />
+
+	<package name="studentInfoSystem" namespace="/" extends="struts-default">
+		<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="loginInterceptor" class="org.streamer.studentinfo.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 默认拦截器栈 -->
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+
+		<!-- 全局结果集 -->
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+
+		<action name="user" class="org.streamer.studentinfo.action.UserAction" method="login" >
+			<result name="error">/login.jsp</result>
+			<result name="logOut" type="redirect">/login.jsp</result>
+			<result name="success">/main.jsp</result>
+			<result name="register">/register.jsp</result>
+			<result name="login">/login.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+<!--  
+		<action name="register" class="org.streamer.studentinfo.action.UserAction" method="register">
+			<result name="success">/login.jsp</result>
+			<result name="error">/register.jsp</result>
+		</action>
+-->
+		<action name="dataDicType" class="org.streamer.studentinfo.action.DataDicTypeAction">
+			<result name="success">/main.jsp</result>
+			<result name="typeSave" type="redirectAction">dataDicType!list</result>
+		</action>
+
+		<action name="dataDic" class="org.streamer.studentinfo.action.DataDicAction">
+			<result name="success">/main.jsp</result>
+			<result name="save" type="redirectAction">dataDic!list</result>
+		</action>
+
+		<action name="grade" class="org.streamer.studentinfo.action.GradeAction">
+			<result name="success">/main.jsp</result>
+			<result name="save" type="redirectAction">grade!list</result>
+		</action>
+
+		<action name="class" class="org.streamer.studentinfo.action.ClassAction">
+			<result name="success">/main.jsp</result>
+			<result name="save" type="redirectAction">class!list</result>
+		</action>
+
+		<action name="student" class="org.streamer.studentinfo.action.StudentAction">
+			<result name="success">/main.jsp</result>
+			<result name="save" type="redirectAction">student!list</result>
+
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/bmp,image/x-png,image/gif,image/jpg,image/jpeg</param>
+				<param name="maximumSize">2000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="loginInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+	</package>
+</struts>
